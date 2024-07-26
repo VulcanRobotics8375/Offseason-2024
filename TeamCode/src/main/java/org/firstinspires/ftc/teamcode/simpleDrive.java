@@ -51,14 +51,21 @@ public class simpleDrive extends OpMode {
     public void loop(){
         // movement code
         double y = -gamepad1.right_stick_y; // sets power to value left stick is at
-        double x = gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x; // rx = right x
+        double x = gamepad1.left_stick_x; // strafing
+        double rx = gamepad1.right_stick_x; // rx = right
 
-        // not sure if these are the actual values yet lol, can figure out w/ test cases?
-        fl.setPower(y + rx + x);
-        fr.setPower(y - rx - x);
-        bl.setPower(y + rx - x);
-        br.setPower(y - rx + x);
+        // scales it down if any of the values are above 1.00
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double flPower = (y + rx + x) / denominator;
+        double frPower = (y - rx - x) / denominator;
+        double blPower = (y + rx - x) / denominator;
+        double brPower = (y - rx + x) / denominator;
+
+        // setting powers
+        fl.setPower(flPower);
+        fr.setPower(frPower);
+        bl.setPower(blPower);
+        br.setPower(brPower);
     }
 
     @Override
