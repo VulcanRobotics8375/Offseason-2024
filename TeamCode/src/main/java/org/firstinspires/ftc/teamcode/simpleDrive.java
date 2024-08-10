@@ -35,12 +35,12 @@ public class simpleDrive extends OpMode {
         bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        // left side motors = forward, right side = reversed
+        // left side motors = reversed, right side = forward
         // this way, they'll both work in the same direction
-        fl.setDirection(DcMotorSimple.Direction.FORWARD);
-        fr.setDirection(DcMotorSimple.Direction.REVERSE);
-        bl.setDirection(DcMotorSimple.Direction.FORWARD);
-        br.setDirection(DcMotorSimple.Direction.REVERSE);
+        fl.setDirection(DcMotorSimple.Direction.REVERSE);
+        fr.setDirection(DcMotorSimple.Direction.FORWARD);
+        bl.setDirection(DcMotorSimple.Direction.REVERSE);
+        br.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     /* NOTE: up is negative for y stick + down is positive
@@ -56,16 +56,22 @@ public class simpleDrive extends OpMode {
 
         // scales it down if any of the values are above 1.00
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double flPower = (y + rx + x) / denominator;
-        double frPower = (y - rx - x) / denominator;
-        double blPower = (y + rx - x) / denominator;
-        double brPower = (y - rx + x) / denominator;
+        double flPower = (y + x + rx) / denominator;
+        double frPower = (y - x - rx) / denominator;
+        double blPower = (y - x + rx) / denominator;
+        double brPower = (y + x - rx) / denominator;
 
         // setting powers
         fl.setPower(flPower);
         fr.setPower(frPower);
         bl.setPower(blPower);
         br.setPower(brPower);
+
+        // testing to see what's wrong?
+        telemetry.addData("front left power", flPower);
+        telemetry.addData("front right power", frPower);
+        telemetry.addData("back left power", blPower);
+        telemetry.addData("back right power", brPower);
     }
 
     @Override
